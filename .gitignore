@@ -1,0 +1,14 @@
+.vscode
+build/
+raw_assets
+screenshots/
+bin/
+
+*.dll
+*.lib
+*.exe
+*.ilk
+*.pdb
+*.psd
+*.rar
+*.zip

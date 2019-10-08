@@ -1,0 +1,10 @@
+#version 330 core
+
+uniform sampler2D tex;
+
+in vec2 vertexUV;
+out vec4 pixelColor;
+
+void main(){
+	pixelColor = texture(tex, vec2(vertexUV.x, 1.0 - vertexUV.y));
+}
