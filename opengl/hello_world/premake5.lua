@@ -3,6 +3,7 @@ project "HelloWorld"
 	language "C"
 	architecture "x64"
 	location "build/HelloWorld"
+	debugdir "bin/%{cfg.buildcfg}"
 	targetdir "bin/%{cfg.buildcfg}"
 
 	files { "src/**.h", "src/**.cpp" }

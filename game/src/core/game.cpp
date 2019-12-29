@@ -7,19 +7,32 @@
 #include "helpers/random.hpp"
 #include "resource/resource_system.hpp"
 
+#include <chrono>
+#include <iostream>
+
+#define NOW (std::chrono::system_clock::now())
+
 void Game::run(GameListener* listener) {
+	std::chrono::duration<double> deltasec;
+
 	if (!init())
 		return;
 
 	listener->onInit();
+
 	while (running) {
+		auto last = NOW;
+		deltasec = NOW - last;
+
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		listener->onUpdate(0.017f);
-		listener->onRender(0.017f);
+		listener->onUpdate(deltasec.count());
+		listener->onRender(deltasec.count());
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		//std::cout << deltasec.count() << std::endl;
 	}
 
 	listener->onFinish();
