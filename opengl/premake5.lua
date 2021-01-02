@@ -9,6 +9,8 @@ LODEPNG_INCLUDE = os.getcwd() .. "/../deps/lodepng"
 GLM_INCLUDE = os.getcwd() .. "/../deps/glm"
 
 RUN_DIR = os.getcwd() .. "/../run_dir"
+BUILD_DIR = os.getcwd() .. "/build"
+BIN_DIR = os.getcwd() .. "/bin"
 
 workspace "OpenGLProjects"
 	configurations { "Debug", "Release" }
@@ -24,4 +26,3 @@ include("multi_textures/premake5.lua")
 include("transform/premake5.lua")
 include("projections/premake5.lua")
 include("instanced/premake5.lua")
-include("camera/premake5.lua")

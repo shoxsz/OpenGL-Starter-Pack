@@ -130,7 +130,12 @@ bool createTexture(const unsigned char* pixels, int width, int height, GLenum te
 
 	*textureId = texId;
 
-	return checkGLErrors();
+	if(!checkGLErrors()) {
+		glDeleteTextures(1, &texId);
+		return false;
+	}
+
+	return true;
 }
 
 int main(void){
@@ -170,7 +175,7 @@ int main(void){
 	}
 
 	vertices = {
-		{ -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ,1.0f },
+		{ -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
 		{ 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
 		{ 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
 		{ -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f }
@@ -192,7 +197,7 @@ int main(void){
 	unsigned int width, height;
 	lodepng::State state;
 
-	if (lodepng::load_file(imageBuffer, "resources/images/image.png")) {
+	if (lodepng::load_file(imageBuffer, "resources/images/happy.png")) {
 		std::cout << "Falha ao carregar imagem!";
 		glfwTerminate();
 		return -1;
@@ -208,7 +213,7 @@ int main(void){
 	}
 
 	//carrega os shaders
-	if (!readFile("resources/shaders/vertex_shader_texture.gl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader_texture.gl", fragmentShaderSource)) {
+	if (!readFile("resources/shaders/vertex_shader_texture.glsl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader_texture.glsl", fragmentShaderSource)) {
 		glfwTerminate();
 		return -1;
 	}

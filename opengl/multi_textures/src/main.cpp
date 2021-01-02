@@ -211,13 +211,13 @@ int main(void){
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
 
 	//texturas
-	if(!createTextureFromFile("resources/images/image.png", &textureId) || !createTextureFromFile("resources/images/image2.png", &textureId2)){
+	if(!createTextureFromFile("resources/images/happy.png", &textureId) || !createTextureFromFile("resources/images/angry.png", &textureId2)){
 		glfwTerminate();
 		return -1;
 	}
 
 	//carrega os shaders
-	if (!readFile("resources/shaders/vertex_shader_texture.gl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader_multi_texture.gl", fragmentShaderSource)) {
+	if (!readFile("resources/shaders/vertex_shader_texture.glsl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader_multi_texture.glsl", fragmentShaderSource)) {
 		glfwTerminate();
 		return -1;
 	}
@@ -251,6 +251,7 @@ int main(void){
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture2"), 1);
 
+	glClearColor(0.6, 0.6, 0.0, 1.0);
 	while(!glfwWindowShouldClose(window)){
 		glClear(GL_COLOR_BUFFER_BIT);
 

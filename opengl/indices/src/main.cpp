@@ -151,7 +151,7 @@ int main(void) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
 	//carrega os shaders
-	if (!readFile("resources/shaders/vertex_shader.gl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader.gl", fragmentShaderSource)) {
+	if (!readFile("resources/shaders/vertex_shader.glsl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader.glsl", fragmentShaderSource)) {
 		glfwTerminate();
 		return -1;
 	}

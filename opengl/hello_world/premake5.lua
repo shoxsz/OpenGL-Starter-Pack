@@ -6,9 +6,9 @@ project "HelloWorld"
 	targetdir "bin/%{cfg.buildcfg}"
 
 	files { "src/**.h", "src/**.cpp" }
-	includedirs { GLFW_INCLUDE }
-	libdirs { GLFW_INCLUDE }
-	links { "glfw3", "opengl32" }
+	includedirs { GLFW_INCLUDE, GLEW_INCLUDE }
+	libdirs { GLFW_LIB, GLEW_LIB }
+	links { "glfw3", "glew32.lib", "opengl32" }
 
 	filter "configurations:Debug"
 		defines { "DEBUG" }

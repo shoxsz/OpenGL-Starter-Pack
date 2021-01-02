@@ -99,7 +99,6 @@ bool createShaderProgram(GLuint vertexShaderId, GLuint fragmentShaderId, GLuint*
 int main(void){
 	GLFWwindow* window;
 
-	std::vector<TriangleVertex> vertices;
 	GLuint bufferId;
 
 	GLuint vaoId;
@@ -128,19 +127,19 @@ int main(void){
 	}
 
 	//vértices
-	vertices = {
+	std::vector<TriangleVertex> vertices = {
 		{ -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f },
 		{ 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f },
 		{ 0.0f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f }
 	};
 
-	//cria o buffer
+	//cria o buffer de dados para armazenar os vértices
 	glGenBuffers(1, &bufferId);
 	glBindBuffer(GL_ARRAY_BUFFER, bufferId);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(TriangleVertex), vertices.data(), GL_STATIC_DRAW);
 
 	//carrega os shaders
-	if (!readFile("resources/shaders/vertex_shader.gl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader.gl", fragmentShaderSource)) {
+	if (!readFile("resources/shaders/vertex_shader.glsl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader.glsl", fragmentShaderSource)) {
 		glfwTerminate();
 		return -1;
 	}
@@ -158,21 +157,20 @@ int main(void){
 
 	glCreateVertexArrays(1, &vaoId);
 	glBindVertexArray(vaoId);
-	glBindBuffer(GL_ARRAY_BUFFER, bufferId);
 
+	glBindBuffer(GL_ARRAY_BUFFER, bufferId);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(TriangleVertex), nullptr);
 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(TriangleVertex), (const void*)(sizeof(float) * 3));
 
-	glUseProgram(shaderProgram);
-
 	glClearColor(0.6, 0.6, 0.0, 1.0);
 	while(!glfwWindowShouldClose(window)){
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glBindVertexArray(vaoId);
+		glUseProgram(shaderProgram);
 		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
 		glfwSwapBuffers(window);

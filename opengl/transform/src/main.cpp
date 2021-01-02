@@ -6,11 +6,14 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <chrono>
 
 #include <lodepng.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#define GET_TIME() std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 
 struct TriangleVertex {
 	float x, y, z;	//coordenadas
@@ -202,10 +205,10 @@ int main(void) {
 
 	vertices = {
 		//front
-	{ -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ,1.0f },
-	{ 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
-	{ 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-	{ -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+	{ -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f ,1.0f },
+	{ 0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+	{ 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+	{ -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
 		//back
 	{ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f ,1.0f },
 	{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
@@ -251,13 +254,13 @@ int main(void) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
 
 	//texturas
-	if (!createTextureFromFile("resources/images/image.png", &textureId) || !createTextureFromFile("resources/images/image2.png", &textureId2)) {
+	if (!createTextureFromFile("resources/images/happy.png", &textureId) || !createTextureFromFile("resources/images/angry.png", &textureId2)) {
 		glfwTerminate();
 		return -1;
 	}
 
 	//carrega os shaders
-	if (!readFile("resources/shaders/vertex_shader_transform.gl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader_multi_texture.gl", fragmentShaderSource)) {
+	if (!readFile("resources/shaders/vertex_shader_transform.glsl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader_multi_texture.glsl", fragmentShaderSource)) {
 		glfwTerminate();
 		return -1;
 	}
@@ -293,14 +296,20 @@ int main(void) {
 
 	transformLocation = glGetUniformLocation(shaderProgram, "transform");
 
-	transform = glm::rotate(glm::mat4(1), glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0, 1.0f, 0.0f));
-	glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(transform));
-
 	glEnable(GL_DEPTH_TEST);
 
+	glClearColor(0.6, 0.6, 0.0, 1.0);
+	auto start = GET_TIME();
 	while (!glfwWindowShouldClose(window)) {
-		glClear(GL_COLOR_BUFFER_BIT);
+		auto end = GET_TIME();
+
+		if ((end - start).count() > 10) {
+			start = end;
+			transform = glm::rotate(transform, glm::radians(1.0f), glm::vec3(0.0, 1.0f, 0.0f));
+			glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(transform));
+		}
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureId);

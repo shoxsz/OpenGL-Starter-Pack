@@ -1,7 +1,5 @@
 .vscode
 build/
-raw_assets
-screenshots/
 bin/
 
 *.dll

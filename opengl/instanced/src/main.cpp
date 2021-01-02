@@ -6,11 +6,14 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <chrono>
 
 #include <lodepng.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#define GET_TIME() std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 
 struct TriangleVertex {
 	float x, y, z;	//coordenadas
@@ -203,14 +206,48 @@ int main(void) {
 		return -1;
 	}
 
+
 	vertices = {
-	{ -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ,1.0f },
-	{ 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
-	{ 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-	{ -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f }
+		//front
+	{ -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f ,1.0f },
+	{ 0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+	{ 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+	{ -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+		//back
+	{ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f ,1.0f },
+	{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+	{ 0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+	{ -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+		//left
+	{ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f ,1.0f },
+	{ -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+	{ -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+	{ -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+		//right
+	{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f ,1.0f },
+	{ 0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+	{ 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+	{ 0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+		//top
+	{ 0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f ,1.0f },
+	{ -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+	{ -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+	{ 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+		//bottom
+	{ 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f ,1.0f },
+	{ -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+	{ -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+	{ 0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f }
 	};
 
-	indices = { 0, 1, 2, 2, 3, 0 };
+	indices = {
+		0, 1, 2, 2, 3, 0,
+		4, 5, 6, 6, 7, 4,
+		8, 9, 10, 10, 11, 8,
+		12, 13, 14, 14, 15, 12,
+		16, 17, 18,  18, 19, 16,
+		20, 21, 22, 22, 23, 20
+	};
 
 	glGenBuffers(1, &bufferId);
 	glBindBuffer(GL_ARRAY_BUFFER, bufferId);
@@ -221,13 +258,13 @@ int main(void) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
 
 	//texturas
-	if (!createTextureFromFile("resources/images/image.png", &textureId) || !createTextureFromFile("resources/images/image2.png", &textureId2)) {
+	if (!createTextureFromFile("resources/images/happy.png", &textureId) || !createTextureFromFile("resources/images/angry.png", &textureId2)) {
 		glfwTerminate();
 		return -1;
 	}
 
 	//carrega os shaders
-	if (!readFile("resources/shaders/vertex_shader_instanced.gl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader_multi_texture.gl", fragmentShaderSource)) {
+	if (!readFile("resources/shaders/vertex_shader_instanced.glsl", vertexShaderSource) || !readFile("resources/shaders/fragment_shader_multi_texture.glsl", fragmentShaderSource)) {
 		glfwTerminate();
 		return -1;
 	}
@@ -265,30 +302,41 @@ int main(void) {
 	projectionLocation = glGetUniformLocation(shaderProgram, "projection");
 
 	transform = glm::rotate(glm::mat4(1), glm::radians(45.0f), glm::vec3(0, 0, 1.0f));
-	projection = glm::ortho(-5.0f, 5.0f, -5.0f, 5.0f);
+	transform = glm::translate(transform, glm::vec3(0.0f, 0.0f, -5.0f));
+
+	projection = glm::perspective(90.0f, 640.0f / 480.0f, 0.01f, 100.0f);
 
 	glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(transform));
 	glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
 
 	//seta os offsets
-	float x = -5.0f;
-	float y = 5.0f;
-	for (unsigned int i = 0; i < 100; i++) {
-		std::stringstream ss;
-		ss << i;
+	for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < 10; ++j) {
+			float x = -5.0f + (j * 1.3f);
+			float y = -5.0f + (i * 1.3f);
 
-		offsetsLocation = glGetUniformLocation(shaderProgram, ("offsets[" + ss.str() + "]").c_str());
-		glUniform2f(offsetsLocation, x, y);
+			std::stringstream ss;
+			ss << j + (i * 10);
 
-		x += 1.3f;
-		if (x >= 9.0f) {
-			x = -5.0f;
-			y -= 1.3f;
+			offsetsLocation = glGetUniformLocation(shaderProgram, ("offsets[" + ss.str() + "]").c_str());
+			glUniform2f(offsetsLocation, x, y);
 		}
 	}
 
+	glEnable(GL_DEPTH_TEST);
+
+	auto start = GET_TIME();
+	glClearColor(0.6, 0.6, 0.0, 1.0);
 	while (!glfwWindowShouldClose(window)) {
-		glClear(GL_COLOR_BUFFER_BIT);
+		auto end = GET_TIME();
+
+		if ((end - start).count() > 10) {
+			start = end;
+			transform = glm::rotate(transform, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(transform));
+		}
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureId);
