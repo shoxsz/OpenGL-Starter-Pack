@@ -71,6 +71,7 @@ void Player::onUpdate(float delta){
 	}
 
 	auto& transform = sprite.getTransform();
+	//rotate around its center
 	transform = glm::translate(glm::mat4(1), glm::vec3(sprite.getWidth() / 2.0f, sprite.getHeight() / 2.0f, 0.0f));
 	transform = glm::rotate(transform, glm::radians(radians), glm::vec3(0, 0, 1.0f));
 	transform = glm::translate(transform, glm::vec3(-sprite.getWidth() / 2.0f, -sprite.getHeight() / 2.0f, 0.0f));

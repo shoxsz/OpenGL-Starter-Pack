@@ -8,9 +8,8 @@
 #include "resource/resource_system.hpp"
 
 #include <chrono>
-#include <iostream>
 
-#define NOW (std::chrono::system_clock::now())
+#define NOW std::chrono::duration_cast<std::chrono::milliseconds>((std::chrono::system_clock::now().time_since_epoch()))
 
 void Game::run(GameListener* listener) {
 	std::chrono::duration<double> deltasec;
@@ -20,19 +19,19 @@ void Game::run(GameListener* listener) {
 
 	listener->onInit();
 
+	auto start = NOW;
 	while (running) {
-		auto last = NOW;
-		deltasec = NOW - last;
+		auto end = NOW;
+		float deltasec = (end - start).count() / 1000.0f;
+		start = end;
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		listener->onUpdate(deltasec.count());
-		listener->onRender(deltasec.count());
+		listener->onUpdate(deltasec);
+		listener->onRender(deltasec);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
-		//std::cout << deltasec.count() << std::endl;
 	}
 
 	listener->onFinish();

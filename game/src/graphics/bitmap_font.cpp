@@ -37,7 +37,7 @@ void Text::setText(const std::string& text){
 }
 
 void Text::glyphVertices(float x, float y, const GlyphData& glyph) {
-	unsigned int startIdx = vertices.size();
+	size_t startIdx = vertices.size();
 
 	std::shared_ptr<Texture> texture = font->getTexture();
 

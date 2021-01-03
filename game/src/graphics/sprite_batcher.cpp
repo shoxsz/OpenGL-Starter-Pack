@@ -65,8 +65,7 @@ void SpriteBatcher::draw(TextureRegion* textureRegion, float width, float height
 
 	last = textureRegion;
 
-	unsigned int startIdx = vertices.size();
-	VertexData transformed;
+	size_t startIdx = vertices.size();
 
 	vertices.push_back(transformCoord({ 0, 0, z, textureRegion->u, textureRegion->v }, transform));
 	vertices.push_back(transformCoord({ width, 0, z, textureRegion->u2, textureRegion->v }, transform));
@@ -136,7 +135,7 @@ void SpriteBatcher::end(){
 		program.loadUniform4x4(viewLocation, glm::value_ptr(view));
 		program.loadUniform(textureLocation, 0);
 
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr);
 
 		drawning = false;
 	}

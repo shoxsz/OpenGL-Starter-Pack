@@ -44,8 +44,8 @@ void Texture::bind(){
 }
 
 void Texture::loadRGBAUByte(GLuint width, GLuint height, const unsigned char* data, GLuint mipmapLevel){
-	this->w = width;
-	this->h = height;
+	this->w = (float)width;
+	this->h = (float)height;
 	glTexImage2D(GL_TEXTURE_2D, mipmapLevel, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 }
 
