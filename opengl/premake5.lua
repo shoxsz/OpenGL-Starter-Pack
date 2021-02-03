@@ -1,17 +1,3 @@
-GLFW_INCLUDE = os.getcwd() .. "/../deps/glfw-3.3/include"
-GLFW_LIB = os.getcwd() .. "/../deps/glfw-3.3/lib-vc2019"
-
-GLEW_INCLUDE = os.getcwd() .. "/../deps/glew-2.1.0/include"
-GLEW_LIB = os.getcwd() .. "/../deps/glew-2.1.0/lib/Release/x64"
-
-LODEPNG_INCLUDE = os.getcwd() .. "/../deps/lodepng"
-
-GLM_INCLUDE = os.getcwd() .. "/../deps/glm"
-
-RUN_DIR = os.getcwd() .. "/../run_dir"
-BUILD_DIR = os.getcwd() .. "/build"
-BIN_DIR = os.getcwd() .. "/bin"
-
 workspace "OpenGLProjects"
 	configurations { "Debug", "Release" }
 	location "build"
