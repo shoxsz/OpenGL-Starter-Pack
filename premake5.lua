@@ -28,6 +28,7 @@ function CreateProject(name, runDir)
 	libdirs { GLFW_LIB, GLEW_LIB }
 
 	if os.is("windows") then
+		defines { "GLEW_STATIC" }
 		links { "glfw3", "glew32", GL_LIB_NAME }
 	elseif os.is("linux") then
 		links { "glfw3", "glew32", "pthread", "X11", "dl", GL_LIB_NAME }
@@ -40,6 +41,7 @@ function CreateProject(name, runDir)
 	filter "configurations:Release"
 		defines { "NDEBUG" }
 		optimize "On"
+	
 end
 
 include("opengl/premake5.lua")
