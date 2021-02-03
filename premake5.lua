@@ -23,8 +23,8 @@ function CreateProject(name, runDir)
 	location("build/" .. name)
 	targetdir "bin/%{cfg.buildcfg}"
 
-	files { "src/**.h", LODEPNG_INCLUDE .. "/**.h", "src/**.cpp", LODEPNG_INCLUDE .. "/**.cpp" }
-	includedirs { GLM_INCLUDE, LODEPNG_INCLUDE, GLFW_INCLUDE, GLEW_INCLUDE }
+	files { os.getcwd() .. "/src/**.h", os.getcwd() .. "/src/**.hpp", LODEPNG_INCLUDE .. "/**.h", os.getcwd() .. "/src/**.cpp", LODEPNG_INCLUDE .. "/**.cpp" }
+	includedirs { os.getcwd() .. "/src", GLM_INCLUDE, LODEPNG_INCLUDE, GLFW_INCLUDE, GLEW_INCLUDE }
 	libdirs { GLFW_LIB, GLEW_LIB }
 
 	if os.is("windows") then
