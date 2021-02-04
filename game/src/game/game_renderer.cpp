@@ -29,9 +29,11 @@ void GameRenderer::renderBackground() {
 	batcher->setProjection(glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f));
 	batcher->setView(glm::mat4(1));
 
+	glm::mat4 transform = glm::translate(glm::mat4(1), glm::vec3(-10, WORLD_BOTTOM, 0));
+
 	TextureRegion background(this->background->texture, 0, 0, 1, 1);
 	batcher->begin();
-	batcher->draw(&background, CAMERA_WIDTH, CAMERA_HEIGHT, glm::translate(glm::mat4(1), glm::vec3(-10, WORLD_BOTTOM, 0)));
+	batcher->draw(&background, CAMERA_WIDTH, CAMERA_HEIGHT, transform);
 	batcher->end();
 }
 
@@ -144,26 +146,34 @@ void UIRenderer::onUpdate(float delta) {
 void UIRenderer::onRender(float delta) {
 	glm::vec3 translation(1.0f, 1.0f, 0.0f);
 
+	auto batcherView = glm::translate(glm::mat4(1), glm::vec3(-320.0f, -320.0f, 0.0f));
+
+	auto lifeTransform = glm::translate(glm::mat4(1), glm::vec3(10.0f, 10.0f, 0.0f));
+	auto lifeTextTransform = glm::translate(glm::mat4(1), glm::vec3(50.0f, 10.0f, 0.0f));
+	
+	auto crystalTransform = glm::translate(glm::mat4(1), glm::vec3(100.0f, 10.0f, 0.0f));
+	auto crystalTextTransform = glm::translate(glm::mat4(1), glm::vec3(150.0f, 10.0f, 0.0));
+
 	batcher->setProjection(glm::ortho(-320.0f, 320.0f, -320.0f, 320.0f));
-	batcher->setView(glm::translate(glm::mat4(1), glm::vec3(-320.0f, -320.0f, 0.0f)));
+	batcher->setView(batcherView);
 
 	batcher->begin();
 
 	//life
-	batcher->draw(life.get(), 32, 32, glm::translate(glm::mat4(1), glm::vec3(10.0f, 10.0f, 0.0f)));
+	batcher->draw(life.get(), 32, 32, lifeTransform);
 	batcher->draw(
 		fontTex.get(),
 		lifeText->getVertices(),
 		lifeText->getIndices(),
-		glm::translate(glm::mat4(1), glm::vec3(50.0f, 10.0f, 0.0f)));
+		lifeTextTransform);
 
 	//crystals
-	batcher->draw(crystal.get(), 32, 32, glm::translate(glm::mat4(1), glm::vec3(100.0f, 10.0f, 0.0f)));
+	batcher->draw(crystal.get(), 32, 32, crystalTransform);
 	batcher->draw(
 		fontTex.get(),
 		crystalsText->getVertices(),
 		crystalsText->getIndices(),
-		glm::translate(glm::mat4(1), glm::vec3(150.0f, 10.0f, 0.0)));
+		crystalTextTransform);
 
 	batcher->end();
 }

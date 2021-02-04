@@ -4,4 +4,4 @@ workspace "FlappySpaceShip"
 	debugdir "game_dir"
 	targetdir "game_dir"
 
-CreateProject("FlappySpaceShip")
+CreateProject("FlappySpaceShip", true)

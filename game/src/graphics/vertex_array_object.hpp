@@ -1,7 +1,7 @@
 #ifndef _VERTEX_ARRAY_OBJECT_HPP_
 #define _VERTEX_ARRAY_OBJECT_HPP_
 
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 struct AttributeLayout{
 	GLuint location;

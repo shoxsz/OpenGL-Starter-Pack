@@ -1,8 +1,8 @@
 workspace "OpenGLProjects"
 	configurations { "Debug", "Release" }
 	location "build"
-	debugdir(RUN_DIR)
-	targetdir(RUN_DIR)
+	debugdir "../run_dir"
+	targetdir "../run_dir"
 
 include("hello_world/premake5.lua")
 include("first_triangle/premake5.lua")

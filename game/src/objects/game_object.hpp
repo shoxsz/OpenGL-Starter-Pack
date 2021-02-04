@@ -4,6 +4,8 @@
 #include "object_components.hpp"
 #include "core/input_listener.hpp"
 
+class GameLogics;
+
 class GameObject{
 public:
 	friend class GameLogics;

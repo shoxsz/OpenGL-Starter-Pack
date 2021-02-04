@@ -12,3 +12,6 @@ bin/
 
 /run_dir/*
 !/run_dir/resources
+
+/game/game_dir/*
+!/game/game_dir/resources

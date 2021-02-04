@@ -13,20 +13,25 @@ GLEW_INCLUDE = os.getcwd() .. "/deps/glew-2.1.0/include"
 LODEPNG_INCLUDE = os.getcwd() .. "/deps/lodepng"
 GLM_INCLUDE = os.getcwd() .. "/deps/glm"
 
-RUN_DIR = os.getcwd() .. "/run_dir"
-LINUX_TARGET_DIR = RUN_DIR
+LINUX_RUN_DIR = os.getcwd() .. "/run_dir"
+LINUX_GAME_RUN_DIR = os.getcwd() .. "/game/game_dir"
 
-function CreateProject(name)
+function CreateProject(name, game)
 	project(name)
 	kind "ConsoleApp"
 	language "C++"
 	architecture "x64"
 	location("build/" .. name)
+	cppdialect "C++17"
 
 	if os.is("windows") then
 		targetdir "bin/%{cfg.buildcfg}"
 	elseif os.is("linux") then
-		targetdir(LINUX_TARGET_DIR)
+		if game == true then
+			targetdir(LINUX_GAME_RUN_DIR)
+		else
+			targetdir(LINUX_RUN_DIR)
+		end
 	end
 
 	files { os.getcwd() .. "/src/**.h", os.getcwd() .. "/src/**.hpp", LODEPNG_INCLUDE .. "/**.h", os.getcwd() .. "/src/**.cpp", LODEPNG_INCLUDE .. "/**.cpp" }
