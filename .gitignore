@@ -9,3 +9,6 @@ bin/
 *.psd
 *.rar
 *.zip
+
+/run_dir/*
+!/run_dir/resources
