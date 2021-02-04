@@ -14,14 +14,20 @@ LODEPNG_INCLUDE = os.getcwd() .. "/deps/lodepng"
 GLM_INCLUDE = os.getcwd() .. "/deps/glm"
 
 RUN_DIR = os.getcwd() .. "/run_dir"
+LINUX_TARGET_DIR = RUN_DIR
 
-function CreateProject(name, runDir)
+function CreateProject(name)
 	project(name)
 	kind "ConsoleApp"
 	language "C++"
 	architecture "x64"
 	location("build/" .. name)
-	targetdir "bin/%{cfg.buildcfg}"
+
+	if os.is("windows") then
+		targetdir "bin/%{cfg.buildcfg}"
+	elseif os.is("linux") then
+		targetdir(LINUX_TARGET_DIR)
+	end
 
 	files { os.getcwd() .. "/src/**.h", os.getcwd() .. "/src/**.hpp", LODEPNG_INCLUDE .. "/**.h", os.getcwd() .. "/src/**.cpp", LODEPNG_INCLUDE .. "/**.cpp" }
 	includedirs { os.getcwd() .. "/src", GLM_INCLUDE, LODEPNG_INCLUDE, GLFW_INCLUDE, GLEW_INCLUDE }
